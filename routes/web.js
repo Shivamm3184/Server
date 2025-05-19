@@ -21,6 +21,7 @@ route.get('/teacherview/:id',TeacherController.teacherView)
 route.post('/productInsert',ProductController.productInsert)
 route.get('/productdisplay',ProductController.productDisplay)
 route.get('/productview/:id',ProductController.productView)
+route.delete('/productdelete/:id',ProductController.productDelete)
 
 
 
