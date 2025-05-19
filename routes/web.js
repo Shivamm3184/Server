@@ -16,6 +16,8 @@ route.delete('/contactdelete/:id',ContactController.contactDelete)
 route.post('/teacherInsert',TeacherController.teacherInsert)
 route.get('/teacherdisplay',TeacherController.teacherDisplay)
 route.get('/teacherview/:id',TeacherController.teacherView)
+route.delete('/teacherdelete/:id',TeacherController.teacherDelete)
+
 
 // Product
 route.post('/productInsert',ProductController.productInsert)

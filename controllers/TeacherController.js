@@ -50,6 +50,20 @@ class TeacherController {
       console.log(error);
     }
   };
+
+  static teacherDelete = async (req, res) => {
+      try {
+        const  id  = req.params.id;
+        const teacher = await TeacherModel.findByIdAndDelete(id);
+        return res.status(200).json({
+          success: true,
+          message: "Data Deleted Successfully",
+          teacher,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
   
 
 

@@ -76,7 +76,7 @@ class ProductController {
   static productDelete = async (req, res) => {
       try {
         const  id  = req.params.id;
-        const product = await ContactModel.findByIdAndDelete(id);
+        const product = await ProductModel.findByIdAndDelete(id);
         return res.status(200).json({
           success: true,
           message: "Data Deleted Successfully",
