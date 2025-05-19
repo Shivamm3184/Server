@@ -3,6 +3,7 @@ const ContactController = require("../controllers/ContactController");
 const UserController = require("../controllers/UserController");
 const verifyToken = require("../middleware/auth");
 const TeacherController = require("../controllers/TeacherController");
+const ProductController = require("../controllers/ProductController");
 const route = express.Router();
 
 
@@ -16,7 +17,10 @@ route.post('/teacherInsert',TeacherController.teacherInsert)
 route.get('/teacherdisplay',TeacherController.teacherDisplay)
 route.get('/teacherview/:id',TeacherController.teacherView)
 
-
+// Product
+route.post('/productInsert',ProductController.productInsert)
+route.get('/productdisplay',ProductController.productDisplay)
+route.get('/productview/:id',ProductController.productView)
 
 
 
