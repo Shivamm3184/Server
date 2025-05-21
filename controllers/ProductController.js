@@ -75,12 +75,13 @@ class ProductController {
       try {
         // console.log(req.body);
         const  id  = req.params.id;
-        const { name, price, description, quantity } = req.body;
+        const { name, price, description, quantity, image } = req.body;
         await ProductModel.findByIdAndUpdate(id,{
           name,
           price,
           description,
           quantity,
+          image
         });
           return res.status(201).json({
               success: true,
