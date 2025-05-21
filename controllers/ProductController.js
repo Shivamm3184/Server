@@ -12,39 +12,39 @@ cloudinary.config({
 class ProductController {
 
   static productInsert = async (req, res) => {
-  try {
-    const { name, price, description, quantity } = req.body;
+    try {
+      const { name, price, description, quantity } = req.body;
 
-    // image upload
-    const file = req.files.image;
-    const imageUpload = await cloudinary.uploader.upload(
-      file.tempFilePath,
-      {
-        folder: "userprofile",
-      }
-    );
+      // image upload
+      const file = req.files.image;
+      const imageUpload = await cloudinary.uploader.upload(
+        file.tempFilePath,
+        {
+          folder: "userprofile",
+        }
+      );
 
-    // Save product with (public_id and url)
-    const result = await ProductModel.create({
-      name,
-      price,
-      description,
-      quantity,
-      image: {
-        public_id: imageUpload.public_id,
-        url: imageUpload.secure_url,
-      },
-    });
+      // Save product with (public_id and url)
+      const result = await ProductModel.create({
+        name,
+        price,
+        description,
+        quantity,
+        image: {
+          public_id: imageUpload.public_id,
+          url: imageUpload.secure_url,
+        },
+      });
 
-    return res.status(201).json({
-      message: "Data Inserted Successfully",
-      data: result,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server Error", error });
-  }
-};
+      return res.status(201).json({
+        message: "Data Inserted Successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Server Error", error });
+    }
+  };
 
   static productDisplay = async (req, res) => {
     try {
@@ -71,30 +71,57 @@ class ProductController {
       console.log(error);
     }
   };
-   static productUpdate = async (req, res) => {
-      try {
-        // console.log(req.body);
-        const  id  = req.params.id;
-        const { name, price, description, quantity, image } = req.body;
-        await ProductModel.findByIdAndUpdate(id,{
-          name,
-          price,
-          description,
-          quantity,
-          image
-        });
-          return res.status(201).json({
-              success: true,
-              message: "Data Updated Successfully",
-          })
-      } catch (error) {
-        console.log(error);
+  static productUpdate = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { name, price, description, quantity } = req.body;
+      if (req.files) {
+        const product = await ProductModel.findById(id);
+        const imageID = product.image.public_id;
+        // console.log(imageID);
+
+        //deleting image from Cloudinary
+        await cloudinary.uploader.destroy(imageID);
+        //new image update
+        const imagefile = req.files.image;
+        const imageupload = await cloudinary.uploader.upload(
+          imagefile.tempFilePath,
+          {
+            folder: "product",
+          }
+        );
+        var data = {
+          name: name,
+          price: price,
+          description: description,
+          quantity: quantity,
+          image: {
+            public_id: imageupload.public_id,
+            url: imageupload.secure_url,
+          },
+        };
+      } else {
+        var data = {
+          name: name,
+          price: price,
+          description: description,
+          quantity: quantity
+        };
       }
-    };
+      await ProductModel.findByIdAndUpdate(id, data);
+      return res.status(200).json({
+        success: true,
+        message: "Data Displayed Successfully",
+        product,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   static productDelete = async (req, res) => {
     try {
-      const  id  = req.params.id;
+      const id = req.params.id;
       const product = await ProductModel.findByIdAndDelete(id);
       return res.status(200).json({
         success: true,
@@ -105,7 +132,7 @@ class ProductController {
       console.log(error);
     }
   };
-  
+
 
 
 }
