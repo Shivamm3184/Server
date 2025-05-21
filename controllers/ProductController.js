@@ -46,7 +46,6 @@ class ProductController {
   }
 };
 
-
   static productDisplay = async (req, res) => {
     try {
       const product = await ProductModel.find();
@@ -72,20 +71,39 @@ class ProductController {
       console.log(error);
     }
   };
-
-  static productDelete = async (req, res) => {
+   static productUpdate = async (req, res) => {
       try {
+        // console.log(req.body);
         const  id  = req.params.id;
-        const product = await ProductModel.findByIdAndDelete(id);
-        return res.status(200).json({
-          success: true,
-          message: "Data Deleted Successfully",
-          product,
+        const { name, price, description, quantity } = req.body;
+        await ProductModel.findByIdAndUpdate(id,{
+          name,
+          price,
+          description,
+          quantity,
         });
+          return res.status(201).json({
+              success: true,
+              message: "Data Updated Successfully",
+          })
       } catch (error) {
         console.log(error);
       }
     };
+
+  static productDelete = async (req, res) => {
+    try {
+      const  id  = req.params.id;
+      const product = await ProductModel.findByIdAndDelete(id);
+      return res.status(200).json({
+        success: true,
+        message: "Data Deleted Successfully",
+        product,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
 
 

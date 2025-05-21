@@ -23,6 +23,8 @@ route.delete('/teacherdelete/:id',TeacherController.teacherDelete)
 route.post('/productInsert',ProductController.productInsert)
 route.get('/productdisplay',ProductController.productDisplay)
 route.get('/productview/:id',ProductController.productView)
+route.put('/productupdate/:id',ProductController.productUpdate)
+
 route.delete('/productdelete/:id',ProductController.productDelete)
 
 
